@@ -18,6 +18,11 @@ All notable changes to the AI Context Infrastructure HLD will be documented in t
   (original design) and Claude Opus 4.7 (review and refinement)
 
 ### Changed
+- Executive Summary updated for consistency with v0.1.1 body
+  changes: Architectural Premise extended to name the substrate-
+  not-layer commitment, Load-Bearing Design Properties extended
+  to include systems-not-agents, Relationship to Adjacent Work
+  expanded to engage with Semantica
 - Status updated to Draft v0.1.1
 
 ## [v0.1] - 2026-05-30
