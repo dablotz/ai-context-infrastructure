@@ -20,7 +20,7 @@ The symptoms are familiar to anyone working in agentic development today: contex
 
 This document specifies a belief graph: a structured, multi-dimensional, trust-tiered representation of organizational knowledge derived from AI-assisted development sessions. Beliefs are first-class entities with explicit provenance, lifecycle states, dimension scores (recency, confidence, corroboration, trust level, scope precision, contradiction history, chain integrity), and a human-in-the-loop promotion interface that governs what becomes authoritative.
 
-The premise can be stated negatively: organizational AI context is not a configuration file. It is not a search corpus. It is not a chat history. It is a curated knowledge graph with the same engineering rigor that production databases receive — schema, indexes, consistency model, access control, audit trail, retention policy, migration path. This design treats it that way.
+The premise can be stated negatively: organizational AI context is not a configuration file. It is not a search corpus. It is not a chat history. It is a curated knowledge graph with the same engineering rigor that production databases receive — schema, indexes, consistency model, access control, audit trail, retention policy, migration path. This design treats it that way. The infrastructure is the substrate for AI-assisted development at team scale, not a layer added on top of existing agent orchestration to make it accountable.
 
 ### Load-Bearing Design Properties
 
@@ -31,6 +31,7 @@ Five properties carry the architecture's weight. Each is specified in the body o
 - **Corroboration semantics that distinguish independent rederivation from confirming echo.** Trust elevation depends on independent rederivations alone; confirming corroborations contribute to scoring at a discounted weight but do not elevate trust. This makes peer-validated trust epistemically meaningful at any agent-to-human ratio.
 - **Human-in-the-loop promotion at the boundary of authoritative knowledge.** Agents contribute candidates; humans govern what becomes organizationally authoritative. The promotion interface is the explicit governance boundary between individual learning and collective knowledge.
 - **Self-hostable by design.** The context store holds organizational knowledge that may be more sensitive than the codebase itself. Vendor-hosted deployment is a convenience option, not the default.
+- **Systems, not agents, in the infrastructure.** The infrastructure is maintained by deterministic systems operations rather than by agents. Agents are content producers whose session output is processed by the infrastructure; they are not components of the infrastructure itself. This commitment is what makes the cost model favorable, the performance targets credible, and the security posture defensible — and it distinguishes this design from contemporary work using similar primitives that takes the opposite position.
 
 ### Cost Case
 
@@ -54,6 +55,7 @@ The design specifies its calibration parameters explicitly rather than burying t
 ### Relationship to Adjacent Work
 
 This design is closest to Karpathy's LLM Wiki pattern in its core premise — that pre-synthesized structured context is a better substrate for LLM reasoning than retrieval over raw sources — but generalizes that premise from personal scale to team scale, where conflict resolution, trust derivation, provenance integrity, and human-in-the-loop promotion become load-bearing requirements that the personal-scale design does not need to address. MEMO and Understand Anything are validating prior work; this document extends them into team-scale governance. Claude Code team memory sync addresses the simpler problem of session continuity for individual developers within a single tool.
+Semantica (Hawksight-AI, v0.4.0 released April 2026) is the strongest contemporary work using similar architectural primitives — context graphs, provenance chains, decision tracking, semantic deduplication, temporal snapshots. The convergent use of these primitives across independent design efforts suggests they are the architecturally correct substrate for this category of work. The architectural disagreement is about where agents belong in the infrastructure: Semantica positions as an accountability layer added on top of existing agent orchestration with agentic skills performing extraction, validation, and reasoning inside the infrastructure; this design positions the infrastructure as the substrate with deterministic systems operations performing the same functions. Section 1.4 develops the engagement in full.
 
 ---
 

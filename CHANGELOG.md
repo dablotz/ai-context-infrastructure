@@ -13,8 +13,16 @@ All notable changes to the AI Context Infrastructure HLD will be documented in t
   disagreement about where agents belong in the infrastructure
   stack
 - Semantica reference in Appendix C
+- PRODUCTION_NOTES.md: disclosure of AI assistance in producing
+  the document, with specific attribution to Claude Sonnet 4.6
+  (original design) and Claude Opus 4.7 (review and refinement)
 
 ### Changed
+- Executive Summary updated for consistency with v0.1.1 body
+  changes: Architectural Premise extended to name the substrate-
+  not-layer commitment, Load-Bearing Design Properties extended
+  to include systems-not-agents, Relationship to Adjacent Work
+  expanded to engage with Semantica
 - Status updated to Draft v0.1.1
 
 ## [v0.1] - 2026-05-30
