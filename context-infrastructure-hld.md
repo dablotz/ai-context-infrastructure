@@ -1,7 +1,7 @@
 # Context Infrastructure for AI-Assisted Development
 ## High-Level Design
 
-**Status:** Draft v0.1
+**Status:** Draft v0.1.1
 **Author:** Greg Blotzer
 **Date:** May 2026
 **Related work:** "The Case for Purpose-Built Context Infrastructure in AI-Assisted Development" (LinkedIn, 2026)
@@ -99,6 +99,8 @@ This design does not cover:
 
 **Properties over implementations.** This document specifies what the system must do and what constraints it must satisfy. Specific technology choices (database vendors, serialization formats, transport protocols) are implementation decisions that should be driven by empirical data from real deployments.
 
+**Systems, not agents, in the infrastructure.** The infrastructure for AI-assisted development is maintained by deterministic systems operations, not by agents. Agents are content producers whose session output is processed by the infrastructure; they are not components of the infrastructure itself. This commitment is what makes the cost model favorable (write-path operations are bounded systems cost rather than agent cost), what makes the performance targets credible (database operations are sub-100ms; agent operations are not), and what makes the security posture defensible (the trust-derivation perimeter is a systems boundary that agent-produced content cannot cross). Contemporary work using similar primitives makes the opposite choice; see Section 1.4 for the engagement with that work.
+
 ### 1.4 Relationship to Adjacent Systems
 
 **MEMO (MIT/NUS/Singapore-MIT Alliance, 2026):** The closest existing research system. Validates the architectural direction of separating memory from reasoning and using a dedicated memory model as a queryable knowledge store. MEMO is designed for static document corpora; this system extends that direction to handle dynamic session accumulation, team sharing, human-in-the-loop promotion, and interpretable provenance. The MEMO authors explicitly identify attribution mechanisms and access controls as future work; this design addresses both.
@@ -108,6 +110,10 @@ This design does not cover:
 **Claude Code team memory sync (Anthropic, 2026):** A flat key-value store with server-wins conflict resolution, scoped to repository and synchronized to Anthropic-hosted infrastructure. Addresses session continuity for individual developers within a single tool. Does not address team-scale merge semantics, provenance, structured belief representation, or organizational control of the context store.
 
 **Karpathy's LLM Wiki (2026):** A widely-discussed personal knowledge base pattern in which an LLM maintains a synthesized markdown wiki over raw source files, governed by a natural-language `agents.md` instruction file. Validates the architectural direction of separating raw input from structured working representation and delegating curation to the agent. Optimized for the single-user case where there is no merge problem, no adversarial threat model, and no need for team-scale governance. This design generalizes the same architectural premise — pre-synthesized structured context as the working substrate — to multi-contributor team contexts, where conflict resolution, trust derivation, provenance integrity, and human-in-the-loop promotion become load-bearing requirements that the personal-scale design does not need to address.
+
+**Semantica (Hawksight-AI, 2026):** The strongest contemporary work using similar architectural primitives — context graphs, provenance chains (W3C PROV-O compliant), decision tracking, semantic deduplication, and temporal snapshots applied to AI agent infrastructure. Production v0.4.0 released April 2026. The convergent use of these primitives across independent design efforts suggests they are the architecturally correct substrate for this category of work.
+The architectural disagreement lies elsewhere. Semantica's integration model places agents inside the infrastructure: extraction, ingestion, validation, deduplication, and reasoning are performed by agentic skills added to the host environment (Claude Code, Cursor, Codex, and others). The system is positioned as an accountability layer added on top of existing agent orchestration — agents do their work and Semantica captures provenance so the work can be explained and audited.
+This design takes the opposite position, articulated as a guiding principle in Section 1.3. Agents produce session content as their primary work; the infrastructure ingests, normalizes, deduplicates, and resolves conflicts as deterministic systems operations. The choice is consequential. Agent-maintained infrastructure inherits the cost, latency, reliability, and failure-mode characteristics of agents — including hallucination, prompt injection susceptibility, and non-deterministic decision-making — and propagates them into the maintenance layer of the context system. Systems-maintained infrastructure has the operational characteristics of conventional software services: deterministic, auditable, performance-predictable. The cost model in Section 8, the performance assumptions in Section 4.7.7, the trust derivation in Section 4.5, and the security posture in Section 9 all depend on the systems-not-agents commitment. Both projects address real problems with overlapping primitive toolkits; they make opposite architectural choices about where agents belong in the infrastructure stack.
 
 ---
 
@@ -1899,3 +1905,7 @@ https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
 **TeamPCP GitHub breach** (The Hacker News, May 2026).
 Documented attack on the distributed local model for AI session context. A single poisoned developer tool, targeting AI coding assistant configuration files (CLAUDE.md and .cursorrules) with zero-width Unicode injection, gave attackers access to 3,800 internal repositories. Cited in the Executive Summary, Section 9.2.2 (attacker profiles), Section 9.8 (distributed model security analysis), and Sections 10.3.1 and 10.3.3 as the documented attack motivating the migration review gate.
 https://thehackernews.com/2026/05/github-investigating-teampcp-claimed.html
+
+**Semantica** (Hawksight-AI, 2026).
+Open-source framework for context graphs, decision intelligence, and provenance in AI agent systems. Production v0.4.0 released April 2026. Cited in Section 1.3 (guiding principles) and Section 1.4 (related work) as the strongest contemporary work using similar architectural primitives applied to a different architectural commitment about where agents belong in the infrastructure stack.
+https://github.com/Hawksight-AI/semantica
