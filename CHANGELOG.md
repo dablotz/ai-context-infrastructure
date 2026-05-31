@@ -25,6 +25,12 @@ All notable changes to the AI Context Infrastructure HLD will be documented in t
   expanded to engage with Semantica
 - Status updated to Draft v0.1.1
 
+### Removed
+- Reference to Claude Code team memory sync in Section 1.4 and
+  Executive Summary. The feature was inferred from leaked source
+  analysis rather than from public Anthropic documentation; the
+  HLD's prior-art citations must be publicly verifiable.
+
 ## [v0.1] - 2026-05-30
 
 Initial publication.
